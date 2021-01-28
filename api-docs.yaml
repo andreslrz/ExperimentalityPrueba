@@ -1,0 +1,449 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8090
+  description: Generated server url
+paths:
+  /store/producto/decuento/{id}:
+    put:
+      tags:
+      - producto-controller
+      operationId: anularDescuento
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /store/categorias:
+    get:
+      tags:
+      - categoria-controller
+      operationId: getCategorias
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageCategoria'
+    put:
+      tags:
+      - categoria-controller
+      operationId: actualizarCategoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /store/producto/{name}/{id}:
+    post:
+      tags:
+      - file-upload-controller
+      operationId: fileUpload
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                File:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+  /store/producto/precio:
+    post:
+      tags:
+      - producto-controller
+      operationId: actualizarPrecioProducto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrecioProductoDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PrecioProductoDTO'
+  /store/producto/nuevo:
+    post:
+      tags:
+      - producto-controller
+      operationId: crearProducto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductoDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /store/producto/descuento:
+    post:
+      tags:
+      - producto-controller
+      operationId: crearDescuento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DescuentoProductoDTO'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DescuentoProductoDTO'
+  /store/categorias/new:
+    post:
+      tags:
+      - categoria-controller
+      operationId: crearCategoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /store/producto/{categoria}/{limit}/{offset}:
+    get:
+      tags:
+      - producto-controller
+      operationId: getProductos
+      parameters:
+      - name: categoria
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: offset
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductoPaginaDTO'
+  /store/producto/populares:
+    get:
+      tags:
+      - producto-controller
+      operationId: getProductosPopulares
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductoPaginaDTO'
+  /store/producto/detalle/{id}:
+    get:
+      tags:
+      - producto-controller
+      operationId: getProducto
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /store/categorias/{id}:
+    get:
+      tags:
+      - categoria-controller
+      operationId: getCategoria
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - categoria-controller
+      operationId: eliminarCategoria
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /store/producto/eliminar/{id}:
+    delete:
+      tags:
+      - producto-controller
+      operationId: eliminarProducto
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    Categoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        descripcion:
+          type: string
+    PrecioProductoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        precio:
+          type: number
+          format: double
+        inicioVigencia:
+          type: string
+          format: date
+        finVigencia:
+          type: string
+          format: date
+        producto:
+          type: integer
+          format: int64
+    ProductoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        categoria:
+          type: integer
+          format: int32
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        stock:
+          type: integer
+          format: int32
+        activo:
+          type: boolean
+        precio:
+          type: number
+          format: double
+    DescuentoProductoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        descuento:
+          type: number
+          format: double
+        inicioVigencia:
+          type: string
+          format: date
+        finVigencia:
+          type: string
+          format: date
+        producto:
+          type: integer
+          format: int64
+    ImagenProductoDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        ruta:
+          type: string
+    ProductoPaginaDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        categoria:
+          type: integer
+          format: int32
+        precio:
+          type: number
+          format: double
+        descuento:
+          type: number
+          format: double
+        stock:
+          type: integer
+          format: int32
+        numeroVisitas:
+          type: integer
+          format: int64
+        imagenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImagenProductoDTO'
+        precioDescuento:
+          type: number
+          format: double
+    Pageable:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: '#/components/schemas/Sort'
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
+    Sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean
+    PageCategoria:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/Categoria'
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        last:
+          type: boolean
+        first:
+          type: boolean
+        empty:
+          type: boolean
